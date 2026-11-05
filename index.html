@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hóa Chất Trong Sinh Hoạt — Trang Chủ</title>
+  <meta name="description" content="Cơ sở dữ liệu và tra cứu hóa chất trong các sản phẩm sinh hoạt hằng ngày, theo mô hình dữ liệu hai cấp và phân loại GHS/HPL." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/home.css" />
+  <link rel="stylesheet" href="css/backgrounds.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">⚗️</div>
+      <span class="nav-logo-text">HOÁ CHẤT SINH HOẠT</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Trang chủ</a></li>
+      <li><a href="products.html">Tra cứu sản phẩm</a></li>
+      <li><a href="chemicals.html">Tra cứu hóa chất</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+      <li><a href="search.html">Tra cứu chung</a></li>
+    </ul>
+    <a href="search.html" class="nav-search-btn">🔍 <span>Tra cứu hóa chất</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<style>
+.hero {
+  position: relative;
+  overflow: hidden;
+}
+.hero h1, .hero .hero-desc { color: #fff !important; text-shadow: 0 2px 16px rgba(0,0,0,0.35); }
+.hero .btn-outline { color: #fff !important; border-color: rgba(255,255,255,0.55) !important; }
+.hero .btn-outline:hover { background: rgba(255,255,255,0.12) !important; }
+
+.hero-honeycomb {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; opacity: 0.18;
+}
+.hero > .container { position: relative; z-index: 1; }
+
+.cat-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px; margin-top: 8px;
+}
+.cat-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 22px 20px; text-decoration: none; color: inherit; transition: all .18s;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.cat-card:hover { border-color: var(--green-300); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.cat-card .cat-icon { font-size: 30px; }
+.cat-card .cat-name { font-weight: 700; color: var(--text); font-size: 1rem; }
+.cat-card .cat-desc { color: var(--muted); font-size: .82rem; line-height: 1.5; }
+
+.flow-strip {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: 10px; padding: 22px 0; color: var(--text2); font-size: .85rem; font-weight: 600;
+}
+.flow-strip span.step {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 100px;
+  padding: 8px 16px;
+}
+.flow-strip span.arrow { color: var(--muted); }
+</style>
+
+<section class="hero">
+  <svg class="hero-honeycomb" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+    <defs>
+      <pattern id="hex" x="0" y="0" width="90" height="104" patternUnits="userSpaceOnUse">
+        <polygon points="45,2 83,23 83,65 45,86 7,65 7,23" fill="none" stroke="#a8f0c0" stroke-width="1.5"/>
+        <polygon points="90,54 128,75 128,117 90,138 52,117 52,75" fill="none" stroke="#a8f0c0" stroke-width="1.5"/>
+        <polygon points="0,54 38,75 38,117 0,138 -38,117 -38,75" fill="none" stroke="#a8f0c0" stroke-width="1.5"/>
+      </pattern>
+      <pattern id="hexdots" x="0" y="0" width="90" height="104" patternUnits="userSpaceOnUse">
+        <circle cx="45" cy="2"  r="2.5" fill="#dcfce7"/>
+        <circle cx="83" cy="23" r="2.5" fill="#dcfce7"/>
+        <circle cx="83" cy="65" r="2.5" fill="#dcfce7"/>
+        <circle cx="45" cy="86" r="2.5" fill="#dcfce7"/>
+        <circle cx="7"  cy="65" r="2.5" fill="#dcfce7"/>
+        <circle cx="7"  cy="23" r="2.5" fill="#dcfce7"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#hex)"/>
+    <rect width="100%" height="100%" fill="url(#hexdots)" opacity="0.7"/>
+  </svg>
+
+  <div class="container">
+    <h1>TRA CỨU HOÁ CHẤT<br/>TRONG SINH HOẠT</h1>
+    <p class="hero-desc">Tra cứu hai chiều giữa sản phẩm sinh hoạt và hóa chất thành phần — phân loại theo GHS,
+      cảnh báo mức độ nguy hại (HPL);<br/> Học liệu số hướng dẫn an toàn hoá chất.</p>
+    <div class="hero-actions">
+      <a href="search.html" class="btn btn-primary">🔍 Tra cứu hóa chất / sản phẩm</a>
+      <a href="#categories" class="btn btn-outline">Các nhóm sản phẩm chính</a>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="stats-row">
+    <a href="chemicals.html" class="stat-item" style="text-decoration:none;cursor:pointer;transition:opacity .18s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'"><div class="stat-number" id="statChems">—</div><div class="stat-label">Hồ sơ hóa chất</div></a>
+    <a href="products.html" class="stat-item" style="text-decoration:none;cursor:pointer;transition:opacity .18s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'"><div class="stat-number" id="statProds">—</div><div class="stat-label">Sản phẩm sinh hoạt</div></a>
+    <a href="resources.html" class="stat-item" style="text-decoration:none;cursor:pointer;transition:opacity .18s;" onmouseover="this.style.opacity='.75'" onmouseout="this.style.opacity='1'"><div class="stat-number" id="statRes">—</div><div class="stat-label">Học liệu số</div></a>
+    <div class="stat-item"><div class="stat-number">3</div><div class="stat-label">Mức cảnh báo HPL</div></div>
+  </div>
+</div>
+
+<!-- LUỒNG TRA CỨU 2 CHIỀU -->
+<div class="container">
+  <div class="flow-strip">
+    <span class="step">🧴 Nhóm sản phẩm</span><span class="arrow">→</span>
+    <span class="step">🧴 Sản phẩm</span><span class="arrow">⇄</span>
+    <span class="step">⚗️ Hóa chất thành phần</span><span class="arrow">→</span>
+    <span class="step">☣️ Phân loại GHS &amp; Mức HPL</span>
+  </div>
+</div>
+
+<!-- 5 NHÓM SẢN PHẨM -->
+<div class="container" id="categories">
+  <div class="articles-section">
+    <div class="articles-header">
+      <h2>Các nhóm sản phẩm chính</h2>
+      <a href="products.html" class="btn btn-outline" style="font-size:.85rem;padding:8px 16px">Xem tất cả sản phẩm →</a>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+  </div>
+</div>
+
+<!-- GIỚI THIỆU HỆ THỐNG PHÂN MỨC HPL -->
+<div class="container">
+  <div class="articles-section">
+    <div class="articles-header"><h2>Hệ thống phân mức cảnh báo (HPL)</h2></div>
+    <div class="cat-grid" id="hplGrid"></div>
+    <p style="color:var(--muted);font-size:.82rem;margin-top:14px;line-height:1.6">
+      * Để hỗ trợ người sử dụng nhận biết nhanh mức độ nguy hại của hóa chất trên website,
+       đề tài xây dựng Hệ thống phân mức cảnh báo hóa chất (Hazard Priority Level – HPL) 
+       gồm ba mức: HPL-3, HPL-2 và HPL-1. 
+       Hệ thống này được xây dựng trên cơ sở tổng hợp thông tin phân loại GHS của từng hóa chất 
+       và chỉ phục vụ mục đích truyền thông, định hướng tra cứu.
+    </p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span style="font-size:20px">⚗️</span><span class="footer-brand-name">HOÁ CHẤT SINH HOẠT</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="chemicals.html">Hóa chất</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+      <li><a href="search.html">Tra cứu chung</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 Cơ sở dữ liệu hoá chất trong sinh hoạt. Dữ liệu chỉ mang tính tham khảo, không thay thế SDS/GHS chính thức.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/resources-data.js"></script>
+<script>
+document.getElementById('statChems').textContent = CHEMICALS.length;
+document.getElementById('statProds').textContent = PRODUCTS.length;
+document.getElementById('statRes').textContent   = CHEMICAL_RESOURCES.length;
+
+document.getElementById('catGrid').innerHTML = CATEGORIES.map(cat => `
+  <a href="products.html" class="cat-card">
+    <div class="cat-icon">${cat.icon}</div>
+    <div class="cat-name">${cat.CategoryName}</div>
+    <div class="cat-desc">${cat.Description}</div>
+  </a>
+`).join('');
+
+document.getElementById('hplGrid').innerHTML = HPL_LEVELS
+  .filter(h => h.HPLLevelID > 0).slice().sort((a,b) => b.HPLLevelID - a.HPLLevelID)
+  .map(h => `
+    <div class="cat-card" style="border-color:${h.ColorCode}55">
+      <div class="cat-icon">${h.icon}</div>
+      <div class="cat-name" style="color:${h.ColorCode}">${h.HPLCode} — ${h.LevelName}</div>
+      <div class="cat-desc">${h.Description}</div>
+    </div>
+`).join('');
+</script>
+</body>
+</html>

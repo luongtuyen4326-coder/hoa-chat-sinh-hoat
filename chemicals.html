@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cơ Sở Dữ Liệu Hóa Chất — Tra Cứu Hóa Chất Trong Sinh Hoạt</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/list.css" />
+  <link rel="stylesheet" href="css/backgrounds.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">⚗️</div>
+      <span class="nav-logo-text">HOÁ CHẤT SINH HOẠT</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Tra cứu sản phẩm</a></li>
+      <li><a href="chemicals.html" class="active">Tra cứu hóa chất</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+      <li><a href="search.html">Tra cứu</a></li>
+    </ul>
+    <a href="search.html" class="nav-search-btn">🔍 <span>Tra cứu</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="list-header chem-header">
+  <div class="list-header-inner">
+    <h1>⚗️ TRA CỨU THEO HOÁ CHẤT</h1>
+  
+    <p style="font-size:.8rem;margin-top:-18px;opacity:.85"></p>
+    <div class="list-stats">
+      <span class="list-stat-badge">Tổng cộng: <strong id="totalCount">—</strong> hồ sơ hóa chất</span>
+      <span class="list-stat-badge">🟢 HPL-1: <strong id="hpl1Count">—</strong></span>
+      <span class="list-stat-badge">🟠 HPL-2: <strong id="hpl2Count">—</strong></span>
+      <span class="list-stat-badge">🔴 HPL-3: <strong id="hpl3Count">—</strong></span>
+      <span class="list-stat-badge">⚪ Chưa phân mức: <strong id="hpl0Count">—</strong></span>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="list-toolbar">
+  <div class="list-toolbar-inner">
+    <div class="list-search">
+      <span class="list-search-icon">🔍</span>
+      <input type="text" id="filterInput" placeholder="Lọc theo tên, tên đồng nghĩa, công thức, CAS, nhóm hóa chất..." oninput="filterList()" />
+    </div>
+    <div class="filter-chips">
+      <span class="filter-chip active" data-filter="all" onclick="setFilter(this,'all')">Tất cả</span>
+      <span class="filter-chip" data-filter="1" onclick="setFilter(this,'1')">🟢 HPL-1</span>
+      <span class="filter-chip" data-filter="2" onclick="setFilter(this,'2')">🟠 HPL-2</span>
+      <span class="filter-chip" data-filter="3" onclick="setFilter(this,'3')">🔴 HPL-3</span>
+      <span class="filter-chip" data-filter="0" onclick="setFilter(this,'0')">⚪ Chưa phân mức</span>
+    </div>
+    <span class="list-count">Hiển thị: <strong id="showCount">—</strong></span>
+  </div>
+</div>
+
+<!-- MAIN LIST -->
+<div class="list-main">
+  <div class="alpha-index" id="alphaIndex"></div>
+  <div class="chem-list-grid" id="chemList"></div>
+  <div class="list-empty" id="listEmpty" style="display:none">
+    <div class="list-empty-icon">🔬</div>
+    <p>Không tìm thấy hóa chất phù hợp</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span>⚗️</span><span class="footer-brand-name">HOÁ CHẤT SINH HOẠT</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="chemicals.html">Hóa chất</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 Cơ sở dữ liệu hoá chất trong sinh hoạt. Dữ liệu chỉ mang tính tham khảo, không thay thế SDS/GHS chính thức.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script>
+let currentFilter = 'all';
+let currentSearch = '';
+
+/* ── Thống kê theo HPL ── */
+function updateStats() {
+  document.getElementById('totalCount').textContent = CHEMICALS.length;
+  document.getElementById('hpl1Count').textContent = CHEMICALS.filter(c => c.HPLLevelID === 1).length;
+  document.getElementById('hpl2Count').textContent = CHEMICALS.filter(c => c.HPLLevelID === 2).length;
+  document.getElementById('hpl3Count').textContent = CHEMICALS.filter(c => c.HPLLevelID === 3).length;
+  document.getElementById('hpl0Count').textContent = CHEMICALS.filter(c => c.HPLLevelID === 0).length;
+}
+
+/* ── Chỉ mục A-Z ── */
+function buildAlphaIndex() {
+  const firstChars = [...new Set(CHEMICALS.map(c => c.ChemicalName[0].toUpperCase()))].sort();
+  const el = document.getElementById('alphaIndex');
+  el.innerHTML = `<button class="alpha-btn active" onclick="jumpTo(this,'')">Tất cả</button>` +
+    firstChars.map(ch => `<button class="alpha-btn" onclick="jumpTo(this,'${ch}')">${ch}</button>`).join('');
+}
+
+function jumpTo(btn, char) {
+  document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (!char) { window.scrollTo({top:0,behavior:'smooth'}); return; }
+  const items = document.querySelectorAll('.chem-list-item');
+  for (const item of items) {
+    if (item.dataset.firstChar === char) {
+      item.scrollIntoView({behavior:'smooth', block:'center'});
+      break;
+    }
+  }
+}
+
+function norm(s){ return(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/gi,'d'); }
+
+/* ── Render danh sách ── */
+function render() {
+  const q = norm(currentSearch.trim());
+  const filtered = CHEMICALS.filter(c => {
+    const matchHPL = currentFilter === 'all' || c.HPLLevelID === parseInt(currentFilter);
+    const matchQ = !q ||
+      norm(c.ChemicalName).includes(q) ||
+      (c.Synonyms||[]).some(s => norm(s).includes(q)) ||
+      norm(c.Formula).includes(q) ||
+      (c.CASNumber||'').includes(currentSearch.trim()) ||
+      norm(c.ChemicalGroup).includes(q);
+    return matchHPL && matchQ;
+  });
+
+  document.getElementById('showCount').textContent = filtered.length;
+  const empty = document.getElementById('listEmpty');
+  const list  = document.getElementById('chemList');
+
+  if (!filtered.length) { list.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display = 'none';
+
+  list.innerHTML = filtered.map((c, i) => {
+    return `
+    <a class="chem-list-item" href="chemical.html?id=${c.ChemicalID}" data-first-char="${c.ChemicalName[0].toUpperCase()}">
+      <span class="chem-list-num">${i+1}</span>
+      <span class="chem-list-formula">${formatFormula(c.Formula)}</span>
+      <div class="chem-list-info">
+        <div class="chem-list-name">${c.ChemicalName}</div>
+        <div class="chem-list-sub">${[(c.Synonyms||[]).join(', '), c.CASNumber ? 'CAS: '+c.CASNumber : ''].filter(Boolean).join(' · ')}</div>
+        <div class="chem-list-tags">
+          ${hplBadgeHTML(c.HPLLevelID)}${c.IsNew ? '<span class="badge badge-muted" style="font-size:.68rem">Mới bổ sung</span>' : ''}
+          ${c.ChemicalGroup ? `<span class="badge badge-muted">${c.ChemicalGroup}</span>` : ''}
+        </div>
+      </div>
+      <span class="chem-list-arrow">›</span>
+    </a>
+  `;
+  }).join('');
+}
+
+function filterList() {
+  currentSearch = document.getElementById('filterInput').value;
+  render();
+}
+
+function setFilter(el, val) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = val;
+  render();
+}
+
+/* ── Init ── */
+updateStats();
+buildAlphaIndex();
+render();
+</script>
+</body>
+</html>

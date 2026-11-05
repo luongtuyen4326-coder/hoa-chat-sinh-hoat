@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tra Cứu Hóa Chất &amp; Sản Phẩm — Hóa Chất Trong Sinh Hoạt</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/search.css" />
+  <link rel="stylesheet" href="css/backgrounds.css" />
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">⚗️</div>
+      <span class="nav-logo-text">HOÁ CHẤT SINH HOẠT</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Tra cứu sản phẩm</a></li>
+      <li><a href="chemicals.html">Tra cứu hóa chất</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+      <li><a href="search.html" class="active">Tra cứu chung</a></li>
+    </ul>
+    <a href="search.html" class="nav-search-btn">🔍 <span>Tra cứu</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="search-hero">
+  <h1 class="hero-title">TRA CỨU CHUNG</h1>
+  <p class="hero-sub">Tra cứu hai chiều: từ <strong>sản phẩm</strong> → xem hóa chất thành phần, hoặc từ <strong>hóa chất</strong> → xem các sản phẩm có chứa hóa chất đó</p>
+
+  <!-- Chọn chiều tra cứu -->
+  <div class="quick-section" style="margin-bottom:18px">
+    <span class="quick-label">Tra cứu theo:</span>
+    <span class="quick-tag mode-tag active" data-mode="chemical" onclick="setMode(this,'chemical')">⚗️ Hóa chất</span>
+    <span class="quick-tag mode-tag" data-mode="product" onclick="setMode(this,'product')">🧴 Sản phẩm</span>
+  </div>
+
+  <div class="search-box-wrap">
+    <div class="search-box">
+      <input type="text" id="searchInput"
+        placeholder="Nhập tên hóa chất, tên đồng nghĩa, công thức hoặc số CAS..."
+        autocomplete="off" autofocus />
+      <button id="clearBtn" onclick="clearSearch()" title="Xoá">✕</button>
+      <button id="searchBtn" onclick="doSearch()">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z"
+                stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <span>Tìm kiếm</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="quick-section" id="quickTagsChemical">
+    <span class="quick-label">Thử ngay:</span>
+    <span class="quick-tag" onclick="quickSearch('Sodium hydroxide')">Sodium hydroxide</span>
+    <span class="quick-tag" onclick="quickSearch('Phenoxyethanol')">Phenoxyethanol</span>
+    <span class="quick-tag" onclick="quickSearch('Glycerol')">Glycerol</span>
+  </div>
+  <div class="quick-section" id="quickTagsProduct" style="display:none">
+    <span class="quick-label">Thử ngay:</span>
+    <span class="quick-tag" onclick="quickSearch('nước rửa chén')">Nước rửa chén</span>
+    <span class="quick-tag" onclick="quickSearch('dầu gội')">Dầu gội</span>
+    <span class="quick-tag" onclick="quickSearch('keo dán')">Keo dán</span>
+  </div>
+
+  <div class="hero-shortcuts">
+    <a href="chemicals.html" class="shortcut-item">
+      <div class="shortcut-icon">⚗️</div>
+      <span class="shortcut-label">Toàn bộ Hóa chất</span>
+    </a>
+    <a href="products.html" class="shortcut-item">
+      <div class="shortcut-icon">🧴</div>
+      <span class="shortcut-label">Toàn bộ Sản phẩm</span>
+    </a>
+    <a href="resources.html" class="shortcut-item">
+      <div class="shortcut-icon">🎓</div>
+      <span class="shortcut-label">Học Liệu Số</span>
+    </a>
+  </div>
+</section>
+
+<!-- ══ KẾT QUẢ ══ -->
+<div class="results-area">
+  <div class="state-empty" id="stateEmpty">
+    <div class="state-icon">🔬</div>
+    <p class="state-text">
+      Nhập từ khoá vào ô tìm kiếm phía trên<br/>
+      hoặc xem <a href="chemicals.html" style="color:var(--accent)">toàn bộ hóa chất</a> /
+      <a href="products.html" style="color:var(--accent)">toàn bộ sản phẩm</a>
+    </p>
+  </div>
+  <div class="state-none" id="stateNone">
+    <div class="state-icon" style="opacity:.3">🧪</div>
+    <p class="state-text">
+      Không tìm thấy kết quả phù hợp.<br/>
+      Hãy thử từ khoá khác hoặc đổi chiều tra cứu.
+    </p>
+  </div>
+  <div class="state-loading" id="stateLoading">
+    <div class="spinner"></div>
+    <p>Đang tìm kiếm...</p>
+  </div>
+  <div class="results-header" id="resultsHeader">
+    <span class="results-count" id="resultsCount"></span>
+  </div>
+  <div id="resultList"></div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span>⚗️</span><span class="footer-brand-name">HOÁ CHẤT SINH HOẠT</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="chemicals.html">Hóa chất</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 Cơ sở dữ liệu hoá chất trong sinh hoạt. Dữ liệu chỉ mang tính tham khảo, không thay thế SDS/GHS chính thức.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/search.js"></script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hồ Sơ Hóa Chất — Tra Cứu Hóa Chất Trong Sinh Hoạt</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/chemical.css" />
+  <link rel="stylesheet" href="css/backgrounds.css" />
+</head>
+<body>
+
+<!-- ══ NAVBAR ══ -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">⚗️</div>
+      <span class="nav-logo-text">HOÁ CHẤT SINH HOẠT</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Tra cứu sản phẩm</a></li>
+      <li><a href="chemicals.html" class="active">Tra cứu hóa chất</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+      <li><a href="search.html">Tra cứu</a></li>
+    </ul>
+    <a href="search.html" class="nav-search-btn">🔍 <span>Tra cứu</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- ══ NỘI DUNG (render bởi JS) ══ -->
+<div class="container" id="pageContent">
+  <div style="text-align:center; padding:120px 0; color:var(--muted);">
+    <div style="width:36px;height:36px;border:2.5px solid var(--border2);
+      border-top-color:var(--accent);border-radius:50%;
+      animation:spin 0.7s linear infinite;margin:0 auto 16px;"></div>
+    <p>Đang tải...</p>
+  </div>
+</div>
+
+<style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span>⚗️</span><span class="footer-brand-name">HOÁ CHẤT SINH HOẠT</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="chemicals.html">Hóa chất</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 Cơ sở dữ liệu hoá chất trong sinh hoạt. Dữ liệu chỉ mang tính tham khảo, không thay thế SDS/GHS chính thức.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/resources-data.js"></script>
+<script src="js/chemical.js"></script>
+</body>
+</html>

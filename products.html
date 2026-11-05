@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cơ Sở Dữ Liệu Sản Phẩm — Tra Cứu Hóa Chất Trong Sinh Hoạt</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/list.css" />
+  <link rel="stylesheet" href="css/backgrounds.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-icon">⚗️</div>
+      <span class="nav-logo-text">HOÁ CHẤT SINH HOẠT</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html" class="active">Tra cứu sản phẩm</a></li>
+      <li><a href="chemicals.html">Tra cứu hóa chất</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+      <li><a href="search.html">Tra cứu</a></li>
+    </ul>
+    <a href="search.html" class="nav-search-btn">🔍 <span>Tra cứu</span></a>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="list-header">
+  <div class="list-header-inner">
+    <h1> 🧴 TRA CỨU THEO SẢN PHẨM</h1>
+    
+    <div class="list-stats">
+      <span class="list-stat-badge">Tổng cộng: <strong id="totalCount">—</strong> sản phẩm</span>
+      <span class="list-stat-badge" id="catCount"></span>
+    </div>
+  </div>
+</div>
+
+<!-- TOOLBAR -->
+<div class="list-toolbar">
+  <div class="list-toolbar-inner">
+    <div class="list-search">
+      <span class="list-search-icon">🔍</span>
+      <input type="text" id="filterInput" placeholder="Lọc theo tên sản phẩm, nhà sản xuất..." oninput="filterList()" />
+    </div>
+    <div class="filter-chips" id="filterChips">
+      <span class="filter-chip active" data-cat="" onclick="setFilter(this,'')">Tất cả</span>
+    </div>
+    <span class="list-count">Hiển thị: <strong id="showCount">—</strong></span>
+  </div>
+</div>
+
+<!-- MAIN GRID -->
+<div class="list-main">
+  <div class="prod-list-grid" id="prodGrid"></div>
+  <div class="list-empty" id="listEmpty" style="display:none">
+    <div class="list-empty-icon">🧴</div>
+    <p>Không tìm thấy sản phẩm phù hợp</p>
+  </div>
+</div>
+
+<!-- MODAL CHI TIẾT SẢN PHẨM -->
+<div id="prodModal" style="display:none; position:fixed; inset:0; z-index:500;
+  background:rgba(0,0,0,0.45); backdrop-filter:blur(6px);
+  align-items:center; justify-content:center; padding:20px;">
+  <div id="prodModalBox" style="
+    background:#fff; border-radius:20px; max-width:640px; width:100%;
+    max-height:90vh; overflow-y:auto; box-shadow:0 24px 80px rgba(0,0,0,0.2);">
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand"><span>⚗️</span><span class="footer-brand-name">HOÁ CHẤT SINH HOẠT</span></div>
+    <ul class="footer-links">
+      <li><a href="index.html">Trang chủ</a></li>
+      <li><a href="products.html">Sản phẩm</a></li>
+      <li><a href="chemicals.html">Hóa chất</a></li>
+      <li><a href="resources.html">Học liệu số</a></li>
+    </ul>
+    <p class="footer-copy">© 2025 Cơ sở dữ liệu hoá chất trong sinh hoạt. Dữ liệu chỉ mang tính tham khảo, không thay thế SDS/GHS chính thức.</p>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script>
+let currentCat    = '';
+let currentSearch = '';
+
+/* ── Thống kê & filter chips theo 5 nhóm sản phẩm (CATEGORIES) ── */
+function init() {
+  document.getElementById('totalCount').textContent = PRODUCTS.length;
+  document.getElementById('catCount').innerHTML = `Nhóm sản phẩm: <strong>${CATEGORIES.length}</strong>`;
+
+  const chips = document.getElementById('filterChips');
+  CATEGORIES.forEach(cat => {
+    const sp = document.createElement('span');
+    sp.className = 'filter-chip';
+    sp.dataset.cat = cat.CategoryID;
+    sp.textContent = `${cat.icon} ${cat.CategoryName}`;
+    sp.onclick = () => setFilter(sp, cat.CategoryID);
+    chips.appendChild(sp);
+  });
+
+  render();
+
+  // Deep-link: products.html?id=X → mở thẳng modal chi tiết (tra cứu 2 chiều từ trang hóa chất)
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  if (id) openModal(id);
+}
+
+function norm(s){ return(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/gi,'d'); }
+
+/* ── Render grid ── */
+function render() {
+  const q = norm(currentSearch.trim());
+  const filtered = PRODUCTS.filter(p => {
+    const matchCat = !currentCat || p.CategoryID === parseInt(currentCat);
+    const matchQ = !q || norm(p.ProductName).includes(q) || norm(p.Manufacturer).includes(q);
+    return matchCat && matchQ;
+  });
+
+  document.getElementById('showCount').textContent = filtered.length;
+  const grid  = document.getElementById('prodGrid');
+  const empty = document.getElementById('listEmpty');
+
+  if (!filtered.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+
+  grid.innerHTML = filtered.map(p => {
+    const cat = getCategoryById(p.CategoryID);
+    const links = getChemicalsByProductId(p.ProductID);
+
+    return `
+      <div class="prod-list-card" onclick="openModal('${p.ProductID}')">
+        <div class="prod-card-thumb">
+          <span>${cat ? cat.icon : '🧴'}</span>
+          <div class="prod-card-category">
+            <span class="badge badge-muted" style="font-size:.68rem">${cat ? cat.CategoryName : ''}</span>
+          </div>
+        </div>
+        <div class="prod-card-body">
+          <div class="prod-card-name">${p.ProductName}</div>
+          <p class="prod-card-desc">${p.Manufacturer || 'Chưa rõ thương hiệu/nhà sản xuất'}</p>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            ${productHPLBadgeHTML(p, true)}
+            <span style="color:var(--muted);font-size:.75rem">${links.length ? links.length + ' hóa chất' : 'Chưa có dữ liệu thành phần'}</span>
+          </div>
+          <div class="prod-card-chems">
+            ${links.slice(0,5).map(l=>`<span class="prod-card-chem">${formatFormula(l.chemical.Formula)}</span>`).join('')}
+            ${links.length > 5 ? `<span class="prod-card-chem">+${links.length-5}</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function filterList() {
+  currentSearch = document.getElementById('filterInput').value;
+  render();
+}
+
+function setFilter(el, cat) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentCat = cat;
+  render();
+}
+
+/* ── Modal chi tiết sản phẩm (tra cứu 2 chiều: sản phẩm → hóa chất) ── */
+function openModal(id) {
+  const p = getProductById(id);
+  if (!p) return;
+
+  const cat = getCategoryById(p.CategoryID);
+  const links = getChemicalsByProductId(p.ProductID);
+
+  const box = document.getElementById('prodModalBox');
+  box.innerHTML = `
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,var(--green-800),var(--green-900));
+      border-radius:20px 20px 0 0; padding:28px 28px 24px; position:relative;">
+      <button onclick="closeModal()" style="position:absolute;top:16px;right:16px;
+        background:rgba(255,255,255,0.15);border:none;border-radius:50%;
+        width:32px;height:32px;cursor:pointer;color:#fff;font-size:18px;
+        display:flex;align-items:center;justify-content:center;">✕</button>
+      <div style="font-size:52px;margin-bottom:12px">${cat ? cat.icon : '📦'}</div>
+      <h2 style="color:#fff;font-family:var(--font-display);font-size:1.4rem;margin-bottom:6px">${p.ProductName}</h2>
+      <span style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.8);
+        border-radius:100px;padding:3px 12px;font-size:0.75rem">${cat ? cat.CategoryName : ''}</span>
+      ${p.Manufacturer ? `<span style="margin-left:8px;color:rgba(255,255,255,0.7);font-size:0.8rem">🏭 ${p.Manufacturer}</span>` : ''}
+    </div>
+
+    <!-- Body -->
+    <div style="padding:24px 28px">
+      <div class="notice-box ${productHPLInfo(p).known ? '' : 'gray'}" style="${productHPLInfo(p).known ? 'background:#f8faf8;border-color:var(--border);color:var(--text2)' : ''}">
+        <div style="margin-bottom:6px"><strong>HPL sản phẩm (suy ra từ thành phần):</strong> ${productHPLBadgeHTML(p)}</div>
+        ${p.AssessmentStatus ? `<div><strong>Trạng thái:</strong> ${p.AssessmentStatus}${p.NumUnrated ? ` · còn ${p.NumUnrated} chất chưa phân mức` : ''}</div>` : ''}
+        ${p.DominantChemicals ? `<div><strong>Chất chi phối:</strong> ${p.DominantChemicals}</div>` : ''}
+        ${p.ScopeNote ? `<div style="margin-top:4px">${p.ScopeNote}</div>` : ''}
+        <div style="margin-top:6px;font-size:.78rem;color:var(--muted)">Mức này KHÔNG thay thế phân loại GHS của hỗn hợp; chưa xét nồng độ, liều, đường và thời gian phơi nhiễm. “≥” (tối thiểu) = còn chất chưa phân mức, mức thực tế có thể cao hơn.</div>
+      </div>
+      ${p.SourceURL ? `<p style="font-size:0.85rem;margin-bottom:18px"><a href="${p.SourceURL}" target="_blank" rel="noopener" style="color:var(--accent)">🔗 Nguồn xác minh sản phẩm</a></p>` : ''}
+
+      <!-- Danh sách hoá chất thành phần -->
+      <div style="font-size:0.73rem;font-weight:700;text-transform:uppercase;
+        letter-spacing:0.1em;color:var(--green-700);margin-bottom:14px">
+        ⚗️ ${links.length} Thành phần chính
+      </div>
+
+      ${links.length ? '' : `<p style="color:var(--muted);font-size:.9rem;line-height:1.6;padding:10px 0">
+        Chưa có dữ liệu thành phần hóa chất cho sản phẩm này trong bộ dữ liệu hiện tại
+        (nhãn/nguồn xác minh không liệt kê đủ thành phần).</p>`}
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${links.map(({ chemical: c, LabelName, LinkConfidence }) => {
+          const hpl = getHPLLevel(c.HPLLevelID) || getHPLLevel(0);
+          const trusted = ['BỘ GỐC – ĐÃ GẮN','XÁC MINH TỪ THÀNH PHẦN'].includes(LinkConfidence);
+          return `
+            <a href="chemical.html?id=${c.ChemicalID}"
+               style="display:flex;align-items:center;gap:14px;
+                 padding:12px 16px;border-radius:12px;
+                 background:${hpl.ColorCode}11;border:1.5px solid ${hpl.ColorCode}55;
+                 text-decoration:none;color:inherit;transition:opacity .18s;"
+               onmouseover="this.style.opacity='.8'" onmouseout="this.style.opacity='1'">
+              <span style="font-size:20px">${hpl.icon}</span>
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:600;font-size:.9rem;color:var(--text)">${c.ChemicalName}</div>
+                <div style="font-family:var(--font-mono);font-size:.8rem;color:var(--accent)">${formatFormula(c.Formula)}</div>
+                ${LabelName ? `<div style="font-size:.75rem;color:var(--muted)">Tên trên nhãn: ${LabelName}</div>` : ''}
+                ${LinkConfidence && !trusted ? `<div style="font-size:.74rem;color:#b45309">⚠ Liên kết: ${LinkConfidence.toLowerCase()}</div>` : ''}
+              </div>
+              <span style="font-size:.7rem;font-weight:700;text-transform:uppercase;
+                letter-spacing:.06em;color:${hpl.ColorCode};text-align:right">
+                ${hpl.HPLCode}
+              </span>
+              <span style="color:var(--muted);font-size:18px">›</span>
+            </a>`;
+        }).join('')}
+      </div>
+
+      <div style="margin-top:20px;text-align:center">
+        <button onclick="closeModal()" class="btn btn-outline" style="width:100%">Đóng</button>
+      </div>
+    </div>`;
+
+  const modal = document.getElementById('prodModal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('prodModal').style.display = 'none';
+  document.body.style.overflow = '';
+  // Xoá ?id= khỏi URL khi đóng modal (không reload trang)
+  if (window.location.search) {
+    history.replaceState(null, '', window.location.pathname);
+  }
+}
+
+document.getElementById('prodModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+init();
+</script>
+</body>
+</html>

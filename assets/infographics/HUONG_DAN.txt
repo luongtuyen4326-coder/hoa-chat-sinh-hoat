@@ -1,0 +1,4 @@
+Copy các file ảnh infographic (.png / .jpg / .webp) vào thư mục này.
+Sau đó khai báo trong js/resources-data.js, ví dụ:
+  FileURL: "assets/infographics/ten-file-cua-ban.png"
+Nên đặt tên file không dấu, không khoảng trắng (dùng dấu gạch ngang).

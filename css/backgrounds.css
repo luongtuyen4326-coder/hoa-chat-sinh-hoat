@@ -1,0 +1,55 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   backgrounds.css — ẢNH NỀN CÁC BANNER (file bạn tự chỉnh)
+
+   CÁCH DÙNG (3 bước):
+   1. Tạo ảnh nền (khuyên dùng 1920×700 px trở lên, JPG/WEBP, dưới 500 KB).
+   2. Copy ảnh vào thư mục:  assets/images/   (ví dụ: banner.jpg)
+   3. Mở dòng tương ứng bên dưới (xóa cặp dấu chú thích ở đầu và cuối dòng)
+      và sửa tên file cho đúng.
+      Lưu file, tải lại trang (Ctrl + F5).
+
+   Muốn đổi lại như cũ: xóa dòng đó (hoặc đặt lại là: none).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── (A) MỘT ẢNH DÙNG CHUNG CHO TẤT CẢ BANNER ───────────────────────── */
+  --banner-image: url('../assets/images/anh2.png');
+  /*--banner-image: none;
+
+  /* ── (B) ẢNH RIÊNG CHO TỪNG LOẠI TRANG (không bắt buộc) ───────────────
+     Nếu không đặt, mỗi loại trang sẽ dùng ảnh chung ở (A).               */
+  --banner-home:   var(--banner-image);  /* Trang chủ                       */
+  --banner-list:   var(--banner-image);  /* Tra cứu sản phẩm / hóa chất / học liệu số */
+  --banner-search: var(--banner-image);  /* Trang Tra cứu                   */
+  /* --banner-home:   url('../assets/images/banner-home.jpg'); */
+  /* --banner-list:   url('../assets/images/banner-list.jpg'); */
+  /* --banner-search: url('../assets/images/banner-search.jpg'); */
+
+  /* ── (C) LỚP PHỦ XANH LÁ ĐỂ CHỮ TRẮNG DỄ ĐỌC ─────────────────────────
+     Số cuối (0.80 / 0.65) là độ đậm: tăng lên → ảnh tối hơn, giảm → rõ ảnh hơn. */
+  --banner-overlay: linear-gradient(135deg, rgba(5,46,22,0.80) 0%, rgba(22,101,52,0.65) 100%);
+}
+
+/* ── Áp dụng (không cần sửa phần dưới) ─────────────────────────────────── */
+.hero {
+  background-image: var(--banner-overlay), var(--banner-home),
+    linear-gradient(135deg, #052e16 0%, #064e24 45%, #166534 75%, #16a34a 100%);
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+}
+.list-header {
+  background-image: var(--banner-overlay), var(--banner-list),
+    linear-gradient(135deg, var(--green-900) 0%, var(--green-800) 100%);
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+}
+.search-hero {
+  background-image: var(--banner-overlay), var(--banner-search),
+    linear-gradient(160deg, var(--green-900) 0%, var(--green-800) 50%, var(--green-900) 100%);
+  background-size: cover; background-position: center; background-repeat: no-repeat;
+}
+
+/* Tắt lưới lục giác trên banner */
+:root { --grid-display: none; }
+.hero-honeycomb,
+.hero::before,
+.list-header::before,
+.search-hero::before { display: var(--grid-display); }
