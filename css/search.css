@@ -183,6 +183,24 @@
 }
 .result-item:hover .result-arrow { transform: translateX(5px); color: var(--accent); }
 
+/* ═══ THU GỌN BANNER TRANG TRA CỨU ═══ */
+.search-hero {
+  min-height: 0;                          /* bỏ chiều cao tối thiểu 400px */
+  justify-content: flex-start;
+  padding: 25px var(--page-pad) 20px;     /* khoảng trống phía trên / dưới banner */
+}
+.hero-title { font-size: clamp(1.5rem, 3vw, 2.6rem); margin-bottom: 2px; }
+.hero-sub   { font-size: 0.85rem; margin-bottom: 10px; }
+.search-hero .quick-section { margin-bottom: 8px !important; }
+.search-box-wrap { margin-bottom: 8px; }
+#searchInput { padding-top: 11px; padding-bottom: 11px; }
+#searchBtn   { min-height: 44px; }
+.hero-shortcuts { display: none; }        /* ẩn 3 icon phía dưới */
+.results-area { margin-top: 12px; }
+.results-header { margin-bottom: 8px; }
+.result-item { padding: 10px 18px; }
+.state-empty { padding: 30px 0; }
+
 @media (max-width: 640px) {
   .search-hero { min-height: 340px; }
   .hero-shortcuts { gap: 18px; }

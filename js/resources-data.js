@@ -48,43 +48,43 @@
 const CHEMICAL_RESOURCES = [
   // ← dán các học liệu của bạn vào đâynst CHEMICAL_RESOURCES = [
   { ResourceID: 1, ResourceTypeID: 1, ChemicalID: null,
-    Title: "Video: Không trộn nước tẩy với axit",
-    Description: "Video ngắn về nguy cơ khi trộn hóa chất tẩy rửa.",
+    Title: "Video: Hướng dẫn sử dụng an toàn",
+    
     FileURL: "https://drive.google.com/drive/folders/114Bp5FY2mFaOk-eb-XdlXUZE0efqIJF7?usp=sharing" },
    
   { ResourceID: 2, ResourceTypeID: 2, ChemicalID: null,
      Title: "Infographic 1: Đọc nhãn trước khi dùng",
-     Description: "9 biểu tượng nguy hiểm GHS và ý nghĩa.",
+     
      FileURL: "assets/infographics/photo1.jpg" },
      
   { ResourceID: 3, ResourceTypeID: 2, ChemicalID: null,
     Title: "Infographic 2: Lưu ý thành phần khi chọn sản phẩm",
-    Description: "Mô tả ngắn về nội dung ảnh.",
+    
     FileURL: "assets/infographics/photo2.jpg" },
 
   { ResourceID: 4, ResourceTypeID: 2, ChemicalID: null,
     Title: "Infographic 3: Không pha trộn chất tẩy rửa",
-    Description: "Mô tả ngắn về nội dung ảnh.",
+    
     FileURL: "assets/infographics/photo3.jpg" },
 
   { ResourceID: 5, ResourceTypeID: 2, ChemicalID: null,
     Title: "Infographic 4: Dùng đúng cách bình xịt diệt côn trùng",
-    Description: "Mô tả ngắn về nội dung ảnh.",
+    
     FileURL: "assets/infographics/photo4.jpg" },
 
   { ResourceID: 6, ResourceTypeID: 2, ChemicalID: null,
-    Title: "Infographic 5: Dùng đúng cách bình xịt gia trùng",
-    Description: "Mô tả ngắn về nội dung ảnh.",
-    FileURL: "assets/infographics/photo41.jpg" },
+    Title: "Infographic 5: Lưu ý khi sử dụng hoá chất bảo vệ thực vật tại nhà",
+    
+    FileURL: "assets/infographics/photo6.jpg" },
 
   { ResourceID: 7, ResourceTypeID: 2, ChemicalID: null,
     Title: "Infographic 6: Bảo vệ nguồn nước",
-    Description: "Mô tả ngắn về nội dung ảnh.",
+    
     FileURL: "assets/infographics/photo5.jpg" },
 
-   { ResourceID: 8, ResourceTypeID: 3, ChemicalID: "C003",
+   { ResourceID: 8, ResourceTypeID: 3, ChemicalID: null,
      Title: "Sổ tay an toàn hóa chất gia dụng",
-      Description: "Tài liệu PDF hướng dẫn sử dụng và xử lý sự cố.",
+      Description: "Tài liệu sổ tay tra cứu hóa chất trong sản phẩm sinh hoạt",
      FileURL: "https://drive.google.com/drive/u/0/folders/1id5tFeyeymJfMrTOAsRTnZJovjG0EMqH" },
 ];
 
