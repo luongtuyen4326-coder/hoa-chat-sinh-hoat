@@ -291,7 +291,8 @@
   font-size: 0.9rem; margin-top: 12px;
 }
 .nl-success.show { display: block; }
-
+.visit-counter { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 18px 0 30px; }
+.visit-counter strong { color: var(--green-700); font-size: 1.1rem; }
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .featured-article { grid-template-columns: 1fr; }

@@ -159,6 +159,11 @@
     <p class="footer-copy">© 2025 Cơ sở dữ liệu hoá chất trong sinh hoạt. Dữ liệu chỉ mang tính tham khảo, không thay thế SDS/GHS chính thức.</p>
   </div>
 </footer>
+<div class="container">
+  <div class="visit-counter" id="visitBox">
+    👁️ Lượt truy cập: <strong id="visitCount">—</strong>
+  </div>
+</div>
 
 <script src="js/data.js"></script>
 <script src="js/resources-data.js"></script>
@@ -186,4 +191,20 @@ document.getElementById('hplGrid').innerHTML = HPL_LEVELS
 `).join('');
 </script>
 </body>
+<script>
+(function () {
+  var CODE = 'hoachatsinhhoat.goatcounter.com';   // ← thay bằng mã GoatCounter của bạn
+  var box = document.getElementById('visitBox');
+  var el  = document.getElementById('visitCount');
+  function load() {
+    fetch('https://' + CODE + '.goatcounter.com/counter/TOTAL.json')
+      .then(function (r) { return r.json(); })
+      .then(function (d) { el.textContent = d.count || '0'; })
+      .catch(function () { box.style.display = 'none'; });   // lỗi thì ẩn khung, không hiện "—"
+  }
+  setTimeout(load, 1500);
+})();
+</script>
+<script data-goatcounter="https://hoachatsinhhoat.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 </html>
