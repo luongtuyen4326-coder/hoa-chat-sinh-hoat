@@ -291,8 +291,17 @@
   font-size: 0.9rem; margin-top: 12px;
 }
 .nl-success.show { display: block; }
-.visit-counter { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 18px 0 30px; }
-.visit-counter strong { color: var(--green-700); font-size: 1.1rem; }
+.visit-counter {
+  position: absolute;
+  top: 100px;      /* menu cao khoảng 80px, nên đặt 100px để nằm dưới menu */
+  left: 24px;
+  z-index: 1000;
+  font-size: 14px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
 /* ── RESPONSIVE ── */
 @media (max-width: 768px) {
   .featured-article { grid-template-columns: 1fr; }
