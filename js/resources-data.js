@@ -48,11 +48,31 @@
 const CHEMICAL_RESOURCES = [
   // ← dán các học liệu của bạn vào đâynst CHEMICAL_RESOURCES = [
   { ResourceID: 1, ResourceTypeID: 1, ChemicalID: null,
-    Title: "Video: Hướng dẫn sử dụng an toàn",
+    Title: "Video: Hướng dấn sử dụng nước tẩy rửa bồn cầu",
     
-    FileURL: "https://drive.google.com/drive/folders/114Bp5FY2mFaOk-eb-XdlXUZE0efqIJF7?usp=sharing" },
-   
-  { ResourceID: 2, ResourceTypeID: 2, ChemicalID: null,
+    FileURL: "https://drive.google.com/file/d/1NefXdoREXSoLrqU4iAg-dluYjwpAn9IO/view?usp=sharing" },
+
+    { ResourceID: 2, ResourceTypeID: 1, ChemicalID: null,
+    Title: "Video: Hướng dẫn sử dụng thuốc nhộm tóc",
+    
+    FileURL: "https://drive.google.com/file/d/17WSaKUtKFkDnXPq9aZ7I7oSqH1HfDlVN/view?usp=sharing" },
+    
+    { ResourceID: 3, ResourceTypeID: 1, ChemicalID: null,
+    Title: "Video: Hướng dẫn sử dụng thuốc xịt côn trùng",
+    
+    FileURL: "https://drive.google.com/file/d/16uAeID5eeWUM6GYiN-EqjbmITg0luYx4/view?usp=sharing" },
+  
+    { ResourceID: 4, ResourceTypeID: 1, ChemicalID: null,
+    Title: "Video:  Hướng dẫn sử dụng cồn thực phẩmcồn y tế",
+    
+    FileURL: "https://drive.google.com/file/d/1pusB78AyKBXMiJwIz82i31ifjurOITJS/view?usp=sharing" },
+    
+    { ResourceID: 5, ResourceTypeID: 1, ChemicalID: null,
+    Title: "Video: Video 5 – Hướng dẫn sử dụng bình gas LPG",
+    
+    FileURL: "https://drive.google.com/file/d/1Pv2jH23zfjX-cEdFSNb5e_X-LBto6OPv/view?usp=sharing" },
+    
+    { ResourceID: 2, ResourceTypeID: 2, ChemicalID: null,
      Title: "Infographic 1: Đọc nhãn trước khi dùng",
      
      FileURL: "assets/infographics/photo1.jpg" },
