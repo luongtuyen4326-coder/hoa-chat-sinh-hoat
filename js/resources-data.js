@@ -72,37 +72,37 @@ const CHEMICAL_RESOURCES = [
     
     FileURL: "https://drive.google.com/file/d/1Pv2jH23zfjX-cEdFSNb5e_X-LBto6OPv/view?usp=sharing" },
     
-    { ResourceID: 2, ResourceTypeID: 2, ChemicalID: null,
+    { ResourceID: 6, ResourceTypeID: 2, ChemicalID: null,
      Title: "Infographic 1: Đọc nhãn trước khi dùng",
      
      FileURL: "assets/infographics/photo1.jpg" },
      
-  { ResourceID: 3, ResourceTypeID: 2, ChemicalID: null,
+  { ResourceID: 7, ResourceTypeID: 2, ChemicalID: null,
     Title: "Infographic 2: Lưu ý thành phần khi chọn sản phẩm",
     
     FileURL: "assets/infographics/photo2.jpg" },
 
-  { ResourceID: 4, ResourceTypeID: 2, ChemicalID: null,
+  { ResourceID: 8, ResourceTypeID: 2, ChemicalID: null,
     Title: "Infographic 3: Không pha trộn chất tẩy rửa",
     
     FileURL: "assets/infographics/photo3.jpg" },
 
-  { ResourceID: 5, ResourceTypeID: 2, ChemicalID: null,
+  { ResourceID: 9, ResourceTypeID: 2, ChemicalID: null,
     Title: "Infographic 4: Dùng đúng cách bình xịt diệt côn trùng",
     
     FileURL: "assets/infographics/photo4.jpg" },
 
-  { ResourceID: 6, ResourceTypeID: 2, ChemicalID: null,
+  { ResourceID: 10, ResourceTypeID: 2, ChemicalID: null,
     Title: "Infographic 5: Lưu ý khi sử dụng hoá chất bảo vệ thực vật tại nhà",
     
     FileURL: "assets/infographics/photo6.jpg" },
 
-  { ResourceID: 7, ResourceTypeID: 2, ChemicalID: null,
+  { ResourceID: 11, ResourceTypeID: 2, ChemicalID: null,
     Title: "Infographic 6: Bảo vệ nguồn nước",
     
     FileURL: "assets/infographics/photo5.jpg" },
 
-   { ResourceID: 8, ResourceTypeID: 3, ChemicalID: null,
+   { ResourceID: 12, ResourceTypeID: 3, ChemicalID: null,
      Title: "Sổ tay an toàn hóa chất gia dụng",
       Description: "Tài liệu sổ tay tra cứu hóa chất trong sản phẩm sinh hoạt",
      FileURL: "https://drive.google.com/drive/u/0/folders/1id5tFeyeymJfMrTOAsRTnZJovjG0EMqH" },
