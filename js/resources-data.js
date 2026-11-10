@@ -63,7 +63,7 @@ const CHEMICAL_RESOURCES = [
     FileURL: "https://drive.google.com/file/d/16uAeID5eeWUM6GYiN-EqjbmITg0luYx4/view?usp=sharing" },
   
     { ResourceID: 4, ResourceTypeID: 1, ChemicalID: null,
-    Title: "Video:  Hướng dẫn sử dụng cồn thực phẩmcồn y tế",
+    Title: "Video:  Hướng dẫn sử dụng cồn thực phẩm cồn y tế",
     
     FileURL: "https://drive.google.com/file/d/1pusB78AyKBXMiJwIz82i31ifjurOITJS/view?usp=sharing" },
     
